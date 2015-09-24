@@ -616,14 +616,20 @@ public final class FS extends Globals {
         //
         // add any pak files in the format pak0.pak pak1.pak, ...
         //
+        addAnyPak:
         for (i = 0; i < 10; i++) {
             pakfile = dir + "/pak" + i + ".pak";
-            if (!(new File(pakfile).canRead()))
-                continue;
+            if (!(new File(pakfile).canRead())){
+            	pakfile = dir + "/PAK" + i + ".PAK";
+            	if (!(new File(pakfile).canRead()))
+            		continue addAnyPak;
+            	else
+            		System.out.print("pak file naming scheme is case sensitive. However, making an exception for PAK" + i + ".PAK\n");
+            }
 
             pak = LoadPackFile(pakfile);
             if (pak == null)
-                continue;
+                continue addAnyPak;
 
             search = new searchpath_t();
             search.pack = pak;
